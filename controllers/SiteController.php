@@ -61,7 +61,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        if (($url = Yii::$app->request->get('url', ''))) {
+            $url = Yii::$app->request->get('url');
+        }
+
+        return $this->render('index', ['url' => $url]);
     }
 
     /**
