@@ -4,8 +4,8 @@
 
 use yii\bootstrap4\Html;
 
-$this->title = 'My Yii Application';
-Yii::debug($url);
+$this->title = 'Youtube Downloader';
+// Yii::debug($url);
 ?>
 <div class="site-index">
     <div class="jumbotron jumbotron-fluid">
