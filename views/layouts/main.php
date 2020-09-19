@@ -42,19 +42,20 @@ AppAsset::register($this);
         ]);
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav'],
-            // 'items' => [
-            //     ['label' => 'Home', 'url' => ['/site/index']],
-            //     ['label' => 'About', 'url' => ['/site/about']],
-            //     ['label' => 'Contact', 'url' => ['/site/contact']],
-            //     Yii::$app->user->isGuest ? (['label' => 'Login', 'url' => ['/site/login']]) : ('<li class="nav-item">'
-            //         . Html::beginForm(['/site/logout'], 'post')
-            //         . Html::submitButton(
-            //             'Logout (' . Yii::$app->user->identity->username . ')',
-            //             ['class' => 'btn btn-dark nav-link logout']
-            //         )
-            //         . Html::endForm()
-            //         . '</li>')
-            // ],
+            'items' => [
+                //     ['label' => 'Home', 'url' => ['/site/index']],
+                ['label' => 'Prueba', 'url' => ['/site/prueba']],
+                //     ['label' => 'About', 'url' => ['/site/about']],
+                //     ['label' => 'Contact', 'url' => ['/site/contact']],
+                //     Yii::$app->user->isGuest ? (['label' => 'Login', 'url' => ['/site/login']]) : ('<li class="nav-item">'
+                //         . Html::beginForm(['/site/logout'], 'post')
+                //         . Html::submitButton(
+                //             'Logout (' . Yii::$app->user->identity->username . ')',
+                //             ['class' => 'btn btn-dark nav-link logout']
+                //         )
+                //         . Html::endForm()
+                //         . '</li>')
+            ],
         ]);
         NavBar::end();
         ?>
