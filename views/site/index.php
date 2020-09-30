@@ -46,6 +46,7 @@ $this->title = 'Youtube Downloader';
         $img = $info->getThumbnails()[2]['url'];
         $title = $info->getTitle();
         $fecha = Yii::$app->formatter->asDate($info->getUploadDate());
+        $path = $video->getFile()->getPathname();
 
     ?>
         <div>
@@ -64,7 +65,7 @@ $this->title = 'Youtube Downloader';
                         'class' => 'btn btn-sm btn-primary',
                         'data' => [
                             'method' => 'POST',
-                            'params' => ['video' => $title . '.mp3'],
+                            'params' => ['video' => $title . '.mp3', 'path' => $path],
                         ],
                     ]) ?>
                 </div>

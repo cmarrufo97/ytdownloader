@@ -137,12 +137,10 @@ class SiteController extends Controller
 
     public function actionDescargar()
     {
-        if (($video = Yii::$app->request->post('video'))) {
-            // comprobar si el archivo existe en la carpeta audio.
-            if (Yii::getAlias('@audio/' . $video)) {
-                $ruta = Yii::getAlias('@audio/' . $video);
-                return Yii::$app->response->sendFile($ruta);
-            }
+        if (($video = Yii::$app->request->post('video'))
+            && ($path = Yii::$app->request->post('path'))
+        ) {
+            return Yii::$app->response->sendFile($path);
         }
     }
 }
