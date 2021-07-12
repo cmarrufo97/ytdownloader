@@ -34,9 +34,9 @@ $this->title = 'Youtube Downloader';
     $dl->setDownloadPath(Yii::getAlias('@audio'));
 
 
-    if ($url !== '' && $dl->getInfo($url) !== null && $dl->getInfo($url) !== '') {
+    if (!empty($url) && $url !== null) {
         $regex = '#https?://(?:www\.)?youtube\.com/watch\?v=([^&]+?)#';
-        if (preg_match($regex, $videoUrl)) {
+        if (preg_match($regex, $url)) {
             try {
                 $video = $dl->download($url);
             } catch (NotFoundException $e) {
@@ -44,11 +44,15 @@ $this->title = 'Youtube Downloader';
             } catch (CopyrightException $e) {
             } catch (\Exception $e) {
             }
+
             $info = $dl->getInfo($url);
             $img = $info->getThumbnails()[2]['url'];
             $title = $info->getTitle();
             $fecha = Yii::$app->formatter->asDate($info->getUploadDate());
             $path = $video->getFile()->getPathname();
+        } else {
+            Yii::$app->session->setFlash('error', 'Por favor, introduzca una url de YouTube correcta.');
+            return;
         }
     ?>
         <div>
