@@ -35,19 +35,21 @@ $this->title = 'Youtube Downloader';
 
 
     if ($url !== '' && $dl->getInfo($url) !== null && $dl->getInfo($url) !== '') {
-        try {
-            $video = $dl->download($url);
-        } catch (NotFoundException $e) {
-        } catch (PrivateVideoException $e) {
-        } catch (CopyrightException $e) {
-        } catch (\Exception $e) {
+        $regex = '#https?://(?:www\.)?youtube\.com/watch\?v=([^&]+?)#';
+        if (preg_match($regex, $videoUrl)) {
+            try {
+                $video = $dl->download($url);
+            } catch (NotFoundException $e) {
+            } catch (PrivateVideoException $e) {
+            } catch (CopyrightException $e) {
+            } catch (\Exception $e) {
+            }
+            $info = $dl->getInfo($url);
+            $img = $info->getThumbnails()[2]['url'];
+            $title = $info->getTitle();
+            $fecha = Yii::$app->formatter->asDate($info->getUploadDate());
+            $path = $video->getFile()->getPathname();
         }
-        $info = $dl->getInfo($url);
-        $img = $info->getThumbnails()[2]['url'];
-        $title = $info->getTitle();
-        $fecha = Yii::$app->formatter->asDate($info->getUploadDate());
-        $path = $video->getFile()->getPathname();
-
     ?>
         <div>
             <div class="float-left mt-3 ml-3">
