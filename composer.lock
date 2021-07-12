@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9645d59f9236be744811d39a11657fff",
+    "content-hash": "521a0d777e98d7d054d480757aa78b6c",
     "packages": [
         {
             "name": "bower-asset/inputmask",
@@ -437,6 +437,10 @@
                 "youtube",
                 "youtube-dl"
             ],
+            "support": {
+                "issues": "https://github.com/norkunas/youtube-dl-php/issues",
+                "source": "https://github.com/norkunas/youtube-dl-php/tree/master"
+            },
             "time": "2020-04-23T04:45:11+00:00"
         },
         {
@@ -7870,5 +7874,5 @@
         "ext-intl": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.1.0"
 }
