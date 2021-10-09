@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
 /* @var $this yii\web\View */
+/** @var $video YoutubeDl\Entity\Video*/
 
 use yii\bootstrap4\Html;
 use YoutubeDl\YoutubeDl;
+use YoutubeDl\Options;
 use YoutubeDl\Exception\CopyrightException;
 use YoutubeDl\Exception\NotFoundException;
 use YoutubeDl\Exception\PrivateVideoException;
@@ -24,32 +27,35 @@ $this->title = 'Youtube Downloader';
 
 
     <?php
-    $dl = new YoutubeDl([
-        'extract-audio' => true,
-        'audio-format' => 'mp3',
-        'audio-quality' => 0, // best
-        'output' => '%(title)s.%(ext)s',
-    ]);
-
-    $dl->setDownloadPath(Yii::getAlias('@audio'));
-
+    $dl = new YoutubeDl();
 
     if (!empty($url) && $url !== null) {
-        $regex = '#https?://(?:www\.)?youtube\.com/watch\?v=([^&]+?)#';
+        $regex = '/^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/';
         if (preg_match($regex, $url)) {
             try {
-                $video = $dl->download($url);
-            } catch (NotFoundException $e) {
-            } catch (PrivateVideoException $e) {
-            } catch (CopyrightException $e) {
-            } catch (\Exception $e) {
-            }
+                $collection = $dl->download(
+                    Options::create()
+                        ->downloadPath(Yii::getAlias('@audio'))
+                        ->extractAudio(true)
+                        ->audioFormat('mp3')
+                        ->audioQuality('0') // best
+                        ->output('%(title)s.%(ext)s')
+                        ->url($url)
+                );
 
-            $info = $dl->getInfo($url);
-            $img = $info->getThumbnails()[2]['url'];
-            $title = $info->getTitle();
-            $fecha = Yii::$app->formatter->asDate($info->getUploadDate());
-            $path = $video->getFile()->getPathname();
+                foreach ($collection->getVideos() as $video) {
+                    if ($video->getError() !== null) {
+                        echo "Error downloading video: {$video->getError()}.";
+                    } else {
+                        $img = $video->getThumbnails()[2]->getUrl();
+                        $title = $video->getTitle();
+                        $fecha = Yii::$app->formatter->asDate($video->getUploadDate());
+                        $path = $video->getFile()->getPathname();
+                        $viewCount = $video->getViewCount();
+                    }
+                }
+            } catch (Exception $e) {
+            }
         } else {
             Yii::$app->session->setFlash('error', 'Por favor, introduzca una url de YouTube correcta.');
             return;
@@ -64,7 +70,7 @@ $this->title = 'Youtube Downloader';
                     <?= $title ?>
                 </div>
                 <div class="ml-4">
-                    <?= $info->getViewCount() . " visualizaciones - $fecha" ?>
+                    <?= $viewCount . " visualizaciones - $fecha" ?>
                 </div>
                 <div class="text-center mt-4">
                     <?= Html::a('Descargar', ['site/descargar'], [
